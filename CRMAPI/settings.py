@@ -25,7 +25,13 @@ SECRET_KEY = 'django-insecure-h9y225_!#kn_hu0%oi_#@xq6%%1+-=hg(9)e_&+tt%&chi8s^7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "crm-api-w09n.onrender.com",  # ✅ No https:// here
+    "localhost",
+    "127.0.0.1",
+]
+CORS_ALLOW_ALL_ORIGINS = True  # Use only in development
+
 
 
 # Application definition
@@ -45,6 +51,7 @@ INSTALLED_APPS = [
     # REST Framework
     'rest_framework',
     'rest_framework_simplejwt',
+    'corsheaders',
 
 ]
 from datetime import timedelta
@@ -65,6 +72,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
