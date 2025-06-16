@@ -73,15 +73,23 @@ class LogoutAPIView(APIView):
 
     def post(self, request):
         try:
-            auth_header = request.headers.get("Authorization")
-            if not auth_header or not auth_header.startswith("Bearer "):
-                return Response({"error": "Authorization header with Bearer token required"}, status=status.HTTP_401_UNAUTHORIZED)
+            refresh_token = request.data.get("refresh")
+            if not refresh_token:
+                return Response(
+                    {"error": "Refresh token required in request body"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
-            refresh_token = auth_header.split(" ")[1]
             token = RefreshToken(refresh_token)
             token.blacklist()
 
-            return Response({"message": "User logged out successfully"}, status=status.HTTP_205_RESET_CONTENT)
+            return Response(
+                {"message": "User logged out successfully"},
+                status=status.HTTP_205_RESET_CONTENT
+            )
 
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
