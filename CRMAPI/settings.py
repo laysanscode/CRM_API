@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-h9y225_!#kn_hu0%oi_#@xq6%%1+-=hg(9)e_&+tt%&chi8s^7
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "crm-api-w09n.onrender.com",  # ✅ No https:// here
+    "https://crm-api-w09n.onrender.com",  # ✅ No https:// here
     "localhost",
     "127.0.0.1",
 ]
