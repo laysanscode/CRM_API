@@ -69,9 +69,9 @@ class UserAPIView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class LogoutAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
-    def post(self, request):
+    def delete(self, request):
         try:
             refresh_token = request.data.get("refresh")
             if not refresh_token:
