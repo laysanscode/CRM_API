@@ -2,6 +2,11 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from Users.models import *
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Users_data
+        fields = '__all__'  
+
 class RegisterSerializer(serializers.Serializer):
     Name = serializers.CharField(max_length=1000)
     ProfilePic = serializers.ImageField()
