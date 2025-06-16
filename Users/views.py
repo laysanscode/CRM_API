@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import check_password
-from Users.models import Import_User
+from Users.models import Users_data
 from .serializers import RegisterSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -31,8 +31,8 @@ class LoginAPIView(APIView):
             password = serializer.validated_data['password']
 
             try:
-                user = Import_User.objects.get(email=email)
-            except Import_User.DoesNotExist:
+                user = Users_data.objects.get(email=email)
+            except Users_data.DoesNotExist:
                 return Response({"error": "Invalid email or password"}, status=status.HTTP_401_UNAUTHORIZED)
 
             if not check_password(password, user.password):

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-from Users.models import Import_User
+from Users.models import Users_data
 
 class RegisterSerializer(serializers.Serializer):
     Name = serializers.CharField(max_length=1000)
@@ -21,7 +21,7 @@ class RegisterSerializer(serializers.Serializer):
     def create(self, validated_data):
         validated_data.pop('confirm_password')
         validated_data['password'] = make_password(validated_data['password'])
-        return Import_User.objects.create(**validated_data)
+        return Users_data.objects.create(**validated_data)
 
 
 class LoginSerializer(serializers.Serializer):
