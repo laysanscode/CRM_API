@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken,AccessToken
 from django.contrib.auth.hashers import check_password
 from Users.models import Users_data
 from .serializers import RegisterSerializer
@@ -55,10 +55,10 @@ class UserAPIView(APIView):
                 return Response({"error": "Authorization header with Bearer token required"}, status=status.HTTP_401_UNAUTHORIZED)
 
             refresh_token = auth_header.split(" ")[1]
-            token = RefreshToken(refresh_token)
+            token = AccessToken(refresh_token)
             user_id = token['user_id']
 
-            user = Users_data.objects.get(id=user_id)
+            user = Users_data.objects.get(user_id=user_id)
             serializer = UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
 

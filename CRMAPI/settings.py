@@ -29,6 +29,7 @@ ALLOWED_HOSTS = [
     "crm-api-w09n.onrender.com",
     "localhost",
     "127.0.0.1",
+     "checkhost.local",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True  # Use only in development
