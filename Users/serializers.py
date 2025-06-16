@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-from Users.models import Users_data
+from Users.models import *
 
 class RegisterSerializer(serializers.Serializer):
     Name = serializers.CharField(max_length=1000)
@@ -12,6 +12,7 @@ class RegisterSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
     confirm_password = serializers.CharField(write_only=True)
+    department = serializers.PrimaryKeyRelatedField(queryset=Department.objects.all())  # or serializers.PrimaryKeyRelatedField(...)
 
     def validate(self, data):
         if data['password'] != data['confirm_password']:
@@ -22,6 +23,7 @@ class RegisterSerializer(serializers.Serializer):
         validated_data.pop('confirm_password')
         validated_data['password'] = make_password(validated_data['password'])
         return Users_data.objects.create(**validated_data)
+
 
 
 class LoginSerializer(serializers.Serializer):
