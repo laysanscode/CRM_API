@@ -48,17 +48,17 @@ class LoginAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserAPIView(APIView):
-    def get(self,request):
+    def get(self, request):
         try:
-            refresh_token = request.data.get("refresh")
-            if not refresh_token:
-                return Response({"error": "Refresh token required"}, status=status.HTTP_400_BAD_REQUEST)
+            auth_header = request.headers.get("Authorization")
+            if not auth_header or not auth_header.startswith("Bearer "):
+                return Response({"error": "Authorization header with Bearer token required"}, status=status.HTTP_401_UNAUTHORIZED)
 
+            refresh_token = auth_header.split(" ")[1]
             token = RefreshToken(refresh_token)
             user_id = token['user_id']
-            user = Users_data.objects.get(id=user_id)
 
-            # Serialize user
+            user = Users_data.objects.get(id=user_id)
             serializer = UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -67,16 +67,17 @@ class UserAPIView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 class LogoutAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         try:
-            refresh_token = request.data.get("refresh")
-            if not refresh_token:
-                return Response({"error": "Refresh token required"}, status=status.HTTP_400_BAD_REQUEST)
+            auth_header = request.headers.get("Authorization")
+            if not auth_header or not auth_header.startswith("Bearer "):
+                return Response({"error": "Authorization header with Bearer token required"}, status=status.HTTP_401_UNAUTHORIZED)
 
+            refresh_token = auth_header.split(" ")[1]
             token = RefreshToken(refresh_token)
             token.blacklist()
 
